@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeifry & Karen · 19 de Junio 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Cormorant+SC:wght@300;400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" crossorigin="anonymous"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { background: #e8e2d8; min-height: 100%; }
+  body {
+    font-family: 'Lato', sans-serif;
+    font-weight: 300;
+    background: #e8e2d8;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+  }
+  #root {
+    width: 100%;
+    max-width: 430px;
+    background: #F8F5EE;
+    min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+  }
+  input:focus { outline: 2px solid #7A9FBF; outline-offset: -1px; }
+  button:focus-visible { outline: 2px solid #7A9FBF; outline-offset: 2px; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const { useState, useEffect } = React;
+
+// ─── PALETTE ────────────────────────────────────────────
+const C = {
+  cream:     '#F8F5EE',
+  creamDark: '#EDE8DD',
+  blue:      '#7A9FBF',
+  blueDark:  '#4A6F8F',
+  blueLight: '#B8D0E5',
+  bluePale:  '#DDE9F3',
+  navy:      '#2C4160',
+  text:      '#3A3028',
+  textLight: '#7A6E63',
+  gold:      '#B8975A',
+};
+
+const FLORAL_IMG = 'uploads/ChatGPT Image 26 abr 2026, 08_57_16 p.m..png';
+
+const DISHES = [
+  { id: 'pollo_tallarines',  label: 'Pollo salteado con tallarines',        emoji: '🍜' },
+  { id: 'pollo_champi',      label: 'Pollo en salsa de champiñones',        emoji: '🍗' },
+  { id: 'pescado_teriyaki',  label: 'Milanesa de pescado en salsa teriyaki', emoji: '🐟' },
+];
+
+const DISH_LABELS = {
+  pollo_tallarines: 'Pollo salteado con tallarines',
+  pollo_champi:     'Pollo en salsa de champiñones',
+  pescado_teriyaki: 'Milanesa de pescado en salsa teriyaki',
+};
+
+// ─── FLORAL ──────────────────────────────────────────────
+function FloralTop() {
+  return (
+    <div style={{ width: '100%', lineHeight: 0, marginBottom: '-8px', background: C.cream }}>
+      <img src={FLORAL_IMG} alt="" style={{ width: '72%', display: 'block', margin: '0 auto', mixBlendMode: 'multiply' }} />
+    </div>
+  );
+}
+function FloralBottom() {
+  return (
+    <div style={{ width: '100%', lineHeight: 0, marginTop: '-8px', background: C.cream }}>
+      <img src={FLORAL_IMG} alt="" style={{ width: '100%', display: 'block', mixBlendMode: 'multiply', transform: 'scaleY(-1)' }} />
+    </div>
+  );
+}
+function FloralDivider() {
+  return (
+    <div style={{ width: '100%', overflow: 'hidden', height: '72px', background: C.cream, position: 'relative', lineHeight: 0 }}>
+      <img src={FLORAL_IMG} alt="" style={{ position: 'absolute', width: '60%', left: '20%', top: '-8%', mixBlendMode: 'multiply', opacity: 0.85 }} />
+      <svg viewBox="0 0 430 72" style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%' }}>
+        <line x1="20"  y1="36" x2="148" y2="36" stroke="#B8D0E5" strokeWidth="0.7" opacity=".7" />
+        <line x1="282" y1="36" x2="410" y2="36" stroke="#B8D0E5" strokeWidth="0.7" opacity=".7" />
+      </svg>
+    </div>
+  );
+}
+
+// ─── COUNTDOWN ───────────────────────────────────────────
+function Countdown() {
+  const wedding = new Date('2026-06-19T19:00:00');
+  const [diff, setDiff] = useState(wedding - new Date());
+  useEffect(() => {
+    const t = setInterval(() => setDiff(wedding - new Date()), 1000);
+    return () => clearInterval(t);
+  }, []);
+  const total = Math.max(0, diff);
+  const days  = Math.floor(total / 86400000);
+  const hrs   = Math.floor(total % 86400000 / 3600000);
+  const mins  = Math.floor(total % 3600000  / 60000);
+  const secs  = Math.floor(total % 60000    / 1000);
+  const pad   = n => String(n).padStart(2, '0');
+  return (
+    <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', padding: '20px 0 8px' }}>
+      {[['DÍAS', days], ['HRS', hrs], ['MIN', mins], ['SEG', secs]].map(([label, val]) => (
+        <div key={label} style={{ textAlign: 'center', minWidth: '56px' }}>
+          <div style={{ fontSize: '32px', fontFamily: 'Cormorant Garamond, serif', fontWeight: 300, color: C.navy, letterSpacing: '-1px', lineHeight: 1 }}>
+            {label === 'DÍAS' ? days : pad(val)}
+          </div>
+          <div style={{ fontSize: '9px', letterSpacing: '2px', color: C.textLight, fontFamily: 'Lato', fontWeight: 300, marginTop: '4px' }}>{label}</div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+// ─── DISH SELECTOR ───────────────────────────────────────
+function DishSelector({ label, value, onChange }) {
+  return (
+    <div style={{ marginBottom: '20px' }}>
+      <p style={{ fontSize: '11px', letterSpacing: '2px', color: C.textLight, fontFamily: 'Lato', fontWeight: 300, textTransform: 'uppercase', marginBottom: '10px' }}>{label}</p>
+      {DISHES.map(d => (
+        <label key={d.id} style={{
+          display: 'flex', alignItems: 'center', gap: '12px',
+          padding: '12px 16px', marginBottom: '8px',
+          background: value === d.id ? C.bluePale : 'white',
+          border: value === d.id ? `1.5px solid ${C.blue}` : '1px solid #E2DDD4',
+          borderRadius: '10px', cursor: 'pointer', transition: 'all .2s'
+        }}>
+          <div style={{
+            width: '22px', height: '22px', borderRadius: '50%', flexShrink: 0,
+            border: value === d.id ? `2px solid ${C.blue}` : '2px solid #ccc',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            background: value === d.id ? C.blue : 'transparent', transition: 'all .2s'
+          }}>
+            {value === d.id && <div style={{ width: '8px', height: '8px', borderRadius: '50%', background: 'white' }} />}
+          </div>
+          <span style={{ fontSize: '14px', color: C.text, fontFamily: 'Lato', fontWeight: 300, lineHeight: 1.3, flex: 1 }}>{d.label}</span>
+          <input type="radio" value={d.id} checked={value === d.id} onChange={() => onChange(d.id)} style={{ display: 'none' }} />
+        </label>
+      ))}
+    </div>
+  );
+}
+
+// ─── TOGGLE BUTTONS ──────────────────────────────────────
+function ToggleBtn({ options, value, onChange }) {
+  return (
+    <div style={{ display: 'flex', gap: '10px', marginBottom: '24px' }}>
+      {options.map(({ v, l }) => (
+        <button key={String(v)} onClick={() => onChange(v)} style={{
+          flex: 1, padding: '12px 8px', borderRadius: '10px',
+          border: value === v ? `1.5px solid ${C.blue}` : '1px solid #E2DDD4',
+          background: value === v ? C.bluePale : 'white',
+          color: value === v ? C.navy : C.textLight,
+          fontFamily: 'Lato', fontWeight: 300, fontSize: '13px',
+          cursor: 'pointer', transition: 'all .2s'
+        }}>{l}</button>
+      ))}
+    </div>
+  );
+}
+
+// ─── LABEL ───────────────────────────────────────────────
+function Label({ children }) {
+  return (
+    <p style={{ fontSize: '11px', letterSpacing: '2px', color: C.textLight, fontFamily: 'Lato', textTransform: 'uppercase', marginBottom: '10px' }}>{children}</p>
+  );
+}
+
+// ─── TEXT INPUT ──────────────────────────────────────────
+function TextInput({ value, onChange, placeholder, readOnly }) {
+  return (
+    <input
+      value={value}
+      onChange={e => onChange(e.target.value)}
+      placeholder={placeholder}
+      readOnly={readOnly}
+      style={{
+        width: '100%', padding: '13px 16px', borderRadius: '10px',
+        border: '1px solid #E2DDD4', background: readOnly ? C.creamDark : 'white',
+        fontFamily: 'Lato', fontWeight: 300, fontSize: '14px',
+        color: C.text, outline: 'none', marginBottom: '24px'
+      }}
+    />
+  );
+}
+
+// ─── SECTION TITLE ───────────────────────────────────────
+function SectionTitle({ children }) {
+  return (
+    <p style={{ fontFamily: 'Cormorant SC', fontSize: '10px', letterSpacing: '3px', color: C.textLight, textAlign: 'center', marginBottom: '20px' }}>{children}</p>
+  );
+}
+
+// ─── CUPO CARD ───────────────────────────────────────────
+function CupoCard({ maxCompanions }) {
+  const total = 1 + maxCompanions;
+  const label = maxCompanions === 0
+    ? '1 persona'
+    : maxCompanions === 1
+      ? '1 persona + 1 acompañante'
+      : '1 persona + 2 acompañantes';
+  return (
+    <div style={{ background: C.bluePale, border: `1.5px solid ${C.blueLight}`, borderRadius: '16px', padding: '20px 24px', textAlign: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '16px', marginBottom: '14px' }}>
+        {Array.from({ length: total }).map((_, i) => (
+          <div key={i} style={{ width: '48px', height: '48px', borderRadius: '50%', background: C.blue, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+              <circle cx="12" cy="7" r="4" fill="white" opacity=".9" />
+              <path d="M4 21c0-4.418 3.582-8 8-8s8 3.582 8 8" stroke="white" strokeWidth="1.5" fill="none" opacity=".9" />
+            </svg>
+          </div>
+        ))}
+      </div>
+      <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '22px', color: C.navy, marginBottom: '6px' }}>{label}</p>
+      <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight, lineHeight: 1.7 }}>
+        Esta invitación es personal e intransferible.<br />
+        Por favor confirma antes del <strong style={{ color: C.navy, fontWeight: 400 }}>12 de junio</strong>.
+      </p>
+    </div>
+  );
+}
+
+// ─── STATES ──────────────────────────────────────────────
+function LoadingState() {
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: C.cream, gap: '20px' }}>
+      <div style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '32px', color: C.navy, opacity: 0.7 }}>Jeifry & Karen</div>
+      <div style={{ width: '36px', height: '36px', border: `3px solid ${C.blueLight}`, borderTop: `3px solid ${C.blue}`, borderRadius: '50%', animation: 'spin 1s linear infinite' }} />
+      <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
+    </div>
+  );
+}
+
+function ErrorState({ message }) {
+  return (
+    <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: C.cream, padding: '32px', textAlign: 'center' }}>
+      <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, marginBottom: '16px' }}>Invitación no encontrada</p>
+      <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '14px', color: C.textLight, lineHeight: 1.8 }}>{message || 'El enlace de esta invitación no es válido.'}</p>
+    </div>
+  );
+}
+
+function AlreadySubmitted({ guest }) {
+  const { attending, people = [] } = guest;
+  return (
+    <div style={{ background: C.cream, minHeight: '100vh' }}>
+      <FloralTop />
+      <div style={{ padding: '0 32px 48px', textAlign: 'center' }}>
+        <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: C.bluePale, margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>
+          {attending ? '💐' : '🕊️'}
+        </div>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '30px', color: C.navy, fontWeight: 300, marginBottom: '16px', lineHeight: 1.2 }}>
+          {attending ? '¡Ya confirmaste tu asistencia!' : 'Gracias por avisarnos'}
+        </p>
+        {attending ? (
+          <>
+            <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '14px', color: C.textLight, lineHeight: 1.9 }}>
+              ¡Te esperamos el <strong style={{ color: C.navy, fontWeight: 400 }}>19 de junio de 2026</strong><br />
+              a las <strong style={{ color: C.navy, fontWeight: 400 }}>7:00 PM</strong> en el Barrio El Prado, Barranquilla.
+            </p>
+            {people.length > 0 && (
+              <div style={{ marginTop: '24px', background: 'white', borderRadius: '14px', border: '1px solid #EDE8DD', padding: '18px 20px', textAlign: 'left' }}>
+                <p style={{ fontFamily: 'Cormorant SC', fontSize: '10px', letterSpacing: '3px', color: C.textLight, marginBottom: '12px', textAlign: 'center' }}>TU SELECCIÓN</p>
+                {people.map((p, i) => (
+                  <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+                    <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: C.bluePale, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', flexShrink: 0 }}>
+                      {p.is_companion ? '👤' : '⭐'}
+                    </div>
+                    <div>
+                      <p style={{ fontFamily: 'Lato', fontWeight: 400, fontSize: '13px', color: C.navy }}>{p.person_name}</p>
+                      <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight }}>{DISH_LABELS[p.dish] || p.dish}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '14px', color: C.textLight, lineHeight: 1.8 }}>
+            Lamentamos que no puedas acompañarnos,<br />pero te tendremos en nuestros corazones<br />en ese día tan especial.
+          </p>
+        )}
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, marginTop: '28px' }}>Jeifry & Karen</p>
+      </div>
+      <FloralBottom />
+    </div>
+  );
+}
+
+// ─── RSVP FORM ───────────────────────────────────────────
+function RsvpPage({ guest, onDone }) {
+  const [attending, setAttending]           = useState(null);
+  const [guestName, setGuestName]           = useState(guest.name);
+  const [guestDish, setGuestDish]           = useState('');
+  const [numCompanions, setNumCompanions]   = useState(null);
+  const [companions, setCompanions]         = useState([
+    { name: '', dish: '' },
+    { name: '', dish: '' },
+  ]);
+  const [formError, setFormError]           = useState('');
+  const [submitting, setSubmitting]         = useState(false);
+
+  const setCompanion = (i, field, value) => {
+    setCompanions(prev => {
+      const next = [...prev];
+      next[i] = { ...next[i], [field]: value };
+      return next;
+    });
+  };
+
+  const handleSubmit = async () => {
+    setFormError('');
+
+    if (attending === null) { setFormError('Por favor indica si podrás asistir.'); return; }
+
+    const people = [];
+
+    if (attending) {
+      if (!guestName.trim()) { setFormError('Por favor ingresa tu nombre.'); return; }
+      if (!guestDish)        { setFormError('Por favor selecciona tu plato.'); return; }
+
+      if (guest.max_companions > 0 && numCompanions === null) {
+        setFormError('¿Cuántos acompañantes traes?'); return;
+      }
+
+      const n = numCompanions || 0;
+      for (let i = 0; i < n; i++) {
+        if (!companions[i].name.trim()) { setFormError(`Por favor ingresa el nombre del acompañante ${n > 1 ? i + 1 : ''}.`.trim()); return; }
+        if (!companions[i].dish)        { setFormError(`Por favor selecciona el plato del acompañante ${n > 1 ? i + 1 : ''}.`.trim()); return; }
+      }
+
+      people.push({ person_name: guestName, is_companion: false, companion_index: 0, dish: guestDish });
+      for (let i = 0; i < n; i++) {
+        people.push({ person_name: companions[i].name, is_companion: true, companion_index: i + 1, dish: companions[i].dish });
+      }
+    }
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`/api/guests/${guest.invite_code}/rsvp`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ attending, people }),
+      });
+      const data = await res.json();
+      if (!res.ok) { setFormError(data.error || 'Error al enviar. Intenta de nuevo.'); setSubmitting(false); return; }
+      onDone(attending);
+    } catch {
+      setFormError('Error de conexión. Por favor intenta de nuevo.');
+      setSubmitting(false);
+    }
+  };
+
+  const companions_n = numCompanions ?? 0;
+
+  return (
+    <div style={{ background: C.cream, minHeight: '100vh' }}>
+      {/* Header */}
+      <div style={{ background: C.bluePale, padding: '24px 28px 20px', borderBottom: `1px solid ${C.blueLight}` }}>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, textAlign: 'center', lineHeight: 1.2 }}>Confirmar asistencia</p>
+        <p style={{ fontSize: '11px', letterSpacing: '2px', textAlign: 'center', color: C.textLight, fontFamily: 'Lato', marginTop: '6px', textTransform: 'uppercase' }}>Antes del 12 de junio</p>
+      </div>
+
+      <div style={{ padding: '28px 24px' }}>
+
+        {/* ¿Asistirás? */}
+        <Label>¿Podrás asistir?</Label>
+        <ToggleBtn
+          options={[{ v: true, l: 'Sí, asistiré 🎉' }, { v: false, l: 'No podré asistir' }]}
+          value={attending}
+          onChange={v => { setAttending(v); setFormError(''); }}
+        />
+
+        {attending === false && (
+          <button onClick={handleSubmit} disabled={submitting} style={{
+            width: '100%', padding: '16px', borderRadius: '12px', background: C.navy, color: 'white',
+            border: 'none', fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '20px',
+            cursor: submitting ? 'not-allowed' : 'pointer', opacity: submitting ? 0.7 : 1
+          }}>
+            {submitting ? 'Enviando…' : 'Enviar respuesta'}
+          </button>
+        )}
+
+        {attending === true && (
+          <>
+            {/* Nombre */}
+            <Label>Tu nombre</Label>
+            <TextInput value={guestName} onChange={setGuestName} placeholder="Nombre completo" />
+
+            {/* Plato principal */}
+            <DishSelector label="Tu plato principal" value={guestDish} onChange={setGuestDish} />
+
+            {/* Acompañantes */}
+            {guest.max_companions > 0 && (
+              <>
+                <Label>{guest.max_companions === 1 ? '¿Traes acompañante?' : '¿Cuántos acompañantes traes?'}</Label>
+                {guest.max_companions === 1 ? (
+                  <ToggleBtn
+                    options={[{ v: 0, l: 'No' }, { v: 1, l: 'Sí' }]}
+                    value={numCompanions}
+                    onChange={v => { setNumCompanions(v); setFormError(''); }}
+                  />
+                ) : (
+                  <ToggleBtn
+                    options={[{ v: 0, l: '0' }, { v: 1, l: '1' }, { v: 2, l: '2' }]}
+                    value={numCompanions}
+                    onChange={v => { setNumCompanions(v); setFormError(''); }}
+                  />
+                )}
+              </>
+            )}
+
+            {/* Slots de acompañantes */}
+            {Array.from({ length: companions_n }).map((_, i) => (
+              <div key={i} style={{ background: 'white', borderRadius: '14px', border: '1px solid #EDE8DD', padding: '18px 16px', marginBottom: '16px' }}>
+                <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '18px', color: C.navy, marginBottom: '16px' }}>
+                  {companions_n > 1 ? `Acompañante ${i + 1}` : 'Acompañante'}
+                </p>
+                <Label>Nombre</Label>
+                <TextInput
+                  value={companions[i].name}
+                  onChange={v => setCompanion(i, 'name', v)}
+                  placeholder="Nombre completo"
+                />
+                <DishSelector
+                  label="Plato principal"
+                  value={companions[i].dish}
+                  onChange={v => setCompanion(i, 'dish', v)}
+                />
+              </div>
+            ))}
+
+            {formError && (
+              <p style={{ color: '#B05050', fontSize: '12px', fontFamily: 'Lato', marginBottom: '16px', textAlign: 'center' }}>{formError}</p>
+            )}
+
+            <button onClick={handleSubmit} disabled={submitting} style={{
+              width: '100%', padding: '18px', borderRadius: '14px', background: C.navy,
+              color: 'white', border: 'none', fontFamily: 'Cormorant Garamond', fontStyle: 'italic',
+              fontSize: '22px', cursor: submitting ? 'not-allowed' : 'pointer', letterSpacing: '.5px',
+              boxShadow: `0 4px 20px ${C.navy}33`, opacity: submitting ? 0.7 : 1
+            }}>
+              {submitting ? 'Enviando…' : 'Confirmar asistencia'}
+            </button>
+          </>
+        )}
+
+        {attending === null && formError && (
+          <p style={{ color: '#B05050', fontSize: '12px', fontFamily: 'Lato', marginTop: '8px', textAlign: 'center' }}>{formError}</p>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ─── CONFIRMED ───────────────────────────────────────────
+function ConfirmedPage() {
+  return (
+    <div style={{ background: C.cream, minHeight: '100vh' }}>
+      <FloralTop />
+      <div style={{ padding: '0 32px 48px', textAlign: 'center' }}>
+        <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: C.bluePale, margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>💐</div>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '34px', color: C.navy, fontWeight: 300, marginBottom: '16px', lineHeight: 1.2 }}>¡Nos alegra mucho contar contigo!</p>
+        <p style={{ fontSize: '14px', color: C.textLight, lineHeight: 1.9, fontFamily: 'Lato', fontWeight: 300 }}>
+          Tu asistencia ha sido confirmada.<br />
+          Te esperamos el <strong style={{ color: C.navy, fontWeight: 400 }}>19 de junio de 2026</strong><br />
+          a las <strong style={{ color: C.navy, fontWeight: 400 }}>7:00 PM</strong> en el Barrio El Prado, Barranquilla.
+        </p>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, marginTop: '28px' }}>Jeifry & Karen</p>
+      </div>
+      <FloralBottom />
+    </div>
+  );
+}
+
+function DeclinedPage() {
+  return (
+    <div style={{ background: C.cream, minHeight: '100vh' }}>
+      <FloralTop />
+      <div style={{ padding: '0 32px 48px', textAlign: 'center' }}>
+        <div style={{ width: '64px', height: '64px', borderRadius: '50%', background: C.bluePale, margin: '0 auto 24px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>🕊️</div>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '34px', color: C.navy, fontWeight: 300, marginBottom: '16px', lineHeight: 1.3 }}>Gracias por hacernos saber</p>
+        <p style={{ fontSize: '14px', color: C.textLight, lineHeight: 1.8, fontFamily: 'Lato', fontWeight: 300 }}>
+          Lamentamos que no puedas acompañarnos,<br />pero te tendremos en nuestros corazones<br />en ese día tan especial.
+        </p>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, marginTop: '24px' }}>Jeifry & Karen</p>
+      </div>
+      <FloralBottom />
+    </div>
+  );
+}
+
+// ─── MAIN INVITE PAGE ────────────────────────────────────
+function InvitePage({ guest, onRsvp }) {
+  return (
+    <div style={{ background: C.cream, minHeight: '100vh' }}>
+      <FloralTop />
+
+      {/* INTRO PERSONALIZADO */}
+      <div style={{ textAlign: 'center', padding: '0 32px' }}>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontWeight: 300, fontSize: '18px', color: C.navy, letterSpacing: '.3px', marginBottom: '10px' }}>
+          Querido/a <em style={{ fontWeight: 500 }}>{guest.name}</em>
+        </p>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontWeight: 300, fontSize: '14px', color: C.textLight, letterSpacing: '.5px', lineHeight: 1.9 }}>
+          <span style={{ fontFamily: 'Cormorant SC', fontSize: '12px', letterSpacing: '3px', color: C.blue }}>Jeremías 29:11</span>
+          <br /><br />
+          <em>"Porque sé muy bien lo que tengo en mente para ustedes —afirma Jehová—. Quiero que tengan paz, no calamidad. Quiero darles un futuro y una esperanza."</em>
+        </p>
+        <p style={{ fontFamily: 'Cormorant SC', fontSize: '11px', letterSpacing: '4px', color: C.textLight, marginTop: '20px', marginBottom: '4px' }}>NOSOTROS NOS CASAMOS</p>
+      </div>
+
+      {/* NOMBRES */}
+      <div style={{ textAlign: 'center', padding: '8px 24px 4px' }}>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontWeight: 300, fontSize: '62px', color: C.navy, lineHeight: 1.05, letterSpacing: '-1px' }}>Jeifry</p>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontWeight: 300, fontSize: '22px', color: C.blue, letterSpacing: '6px', margin: '4px 0' }}>&amp;</p>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontWeight: 300, fontSize: '62px', color: C.navy, lineHeight: 1.05, letterSpacing: '-1px' }}>Karen</p>
+      </div>
+
+      <FloralDivider />
+
+      {/* FECHA */}
+      <div style={{ textAlign: 'center', padding: '8px 32px 24px' }}>
+        <p style={{ fontFamily: 'Cormorant SC', fontSize: '11px', letterSpacing: '4px', color: C.textLight, marginBottom: '10px' }}>VIERNES</p>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontSize: '88px', fontWeight: 300, color: C.navy, lineHeight: 1, letterSpacing: '-4px' }}>19</p>
+        <p style={{ fontFamily: 'Cormorant SC', fontSize: '14px', letterSpacing: '5px', color: C.blue, marginTop: '4px' }}>JUNIO · 2026</p>
+      </div>
+
+      <FloralDivider />
+
+      {/* LUGAR */}
+      <div style={{ textAlign: 'center', padding: '28px 36px' }}>
+        <SectionTitle>LUGAR DE CELEBRACIÓN</SectionTitle>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '26px', color: C.navy, lineHeight: 1.3, marginBottom: '8px' }}>Barrio El Prado</p>
+        <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '13px', color: C.textLight, lineHeight: 1.8, letterSpacing: '.3px' }}>
+          Calle 76 #52-06<br />Barranquilla, Atlántico
+        </p>
+        <a href="https://maps.google.com/?q=Calle+76+52-06+Barranquilla" target="_blank" rel="noreferrer" style={{
+          display: 'inline-block', marginTop: '16px', padding: '10px 24px', borderRadius: '40px',
+          border: `1px solid ${C.blue}`, color: C.blue, fontFamily: 'Lato', fontWeight: 300,
+          fontSize: '12px', letterSpacing: '1.5px', textDecoration: 'none', textTransform: 'uppercase'
+        }}>Ver en el mapa</a>
+      </div>
+
+      <FloralDivider />
+
+      {/* PROGRAMA */}
+      <div style={{ padding: '24px 36px' }}>
+        <SectionTitle>PROGRAMA</SectionTitle>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', padding: '14px 18px', background: 'white', borderRadius: '12px', border: '1px solid #EDE8DD' }}>
+          <div style={{ minWidth: '60px', textAlign: 'center', padding: '6px 0', borderRight: `1px solid ${C.blueLight}` }}>
+            <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '18px', color: C.blue, lineHeight: 1 }}>7:00 PM</p>
+          </div>
+          <div>
+            <p style={{ fontFamily: 'Cormorant SC', fontSize: '13px', color: C.navy, letterSpacing: '1px' }}>Recepción</p>
+            <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight, marginTop: '2px' }}>Bienvenida a los invitados</p>
+          </div>
+        </div>
+      </div>
+
+      <FloralDivider />
+
+      {/* CUPO */}
+      <div style={{ padding: '24px 28px' }}>
+        <SectionTitle>TU CUPO</SectionTitle>
+        <CupoCard maxCompanions={guest.max_companions} />
+      </div>
+
+      <FloralDivider />
+
+      {/* VESTIMENTA */}
+      <div style={{ padding: '24px 28px' }}>
+        <SectionTitle>CÓDIGO DE VESTIMENTA</SectionTitle>
+        <div style={{ background: 'white', borderRadius: '16px', border: '1px solid #EDE8DD', padding: '24px 28px', textAlign: 'center' }}>
+          <div style={{ display: 'flex', justifyContent: 'center', gap: '28px', marginBottom: '18px' }}>
+            <div style={{ textAlign: 'center' }}>
+              <svg width="44" height="56" viewBox="0 0 44 56" fill="none">
+                <circle cx="22" cy="10" r="8" fill={C.blueLight} opacity=".7" />
+                <path d="M8 30 C8 18 14 16 22 16 C30 16 36 18 36 30 L36 52 L8 52 Z" fill={C.navy} opacity=".85" />
+                <path d="M22 16 L18 26 L22 24 L26 26 Z" fill="white" opacity=".6" />
+                <rect x="16" y="48" width="5" height="8" rx="1" fill={C.navy} opacity=".7" />
+                <rect x="23" y="48" width="5" height="8" rx="1" fill={C.navy} opacity=".7" />
+              </svg>
+              <p style={{ fontSize: '11px', color: C.textLight, fontFamily: 'Lato', fontWeight: 300, marginTop: '6px' }}>Caballeros</p>
+            </div>
+            <div style={{ textAlign: 'center' }}>
+              <svg width="44" height="56" viewBox="0 0 44 56" fill="none">
+                <circle cx="22" cy="10" r="8" fill={C.blueLight} opacity=".7" />
+                <path d="M14 18 C14 18 10 22 8 32 L8 52 L36 52 L36 32 C34 22 30 18 30 18 C28 24 16 24 14 18 Z" fill={C.blueLight} opacity=".8" />
+                <path d="M8 32 L4 52 L14 52 L14 30 Z" fill={C.blueLight} opacity=".5" />
+                <path d="M36 32 L40 52 L30 52 L30 30 Z" fill={C.blueLight} opacity=".5" />
+              </svg>
+              <p style={{ fontSize: '11px', color: C.textLight, fontFamily: 'Lato', fontWeight: 300, marginTop: '6px' }}>Damas</p>
+            </div>
+          </div>
+          <p style={{ fontFamily: 'Cormorant Garamond', fontWeight: 500, fontSize: '32px', color: C.navy, letterSpacing: '6px', textTransform: 'uppercase', marginBottom: '10px' }}>FORMAL</p>
+          <div style={{ width: '40px', height: '2px', background: C.blue, margin: '0 auto 14px', borderRadius: '2px' }} />
+          <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight, lineHeight: 1.8 }}>
+            Les pedimos asistir con vestimenta <strong style={{ color: C.navy, fontWeight: 400 }}>elegante y formal</strong>.<br />
+            Evitar colores blanco o beige.
+          </p>
+        </div>
+      </div>
+
+      <FloralDivider />
+
+      {/* MENÚ */}
+      <div style={{ padding: '24px 28px' }}>
+        <SectionTitle>MENÚ PRINCIPAL</SectionTitle>
+        <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight, textAlign: 'center', marginBottom: '18px', lineHeight: 1.6 }}>
+          Al confirmar asistencia deberás elegir<br />uno de los siguientes platos
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          {DISHES.map(d => (
+            <div key={d.id} style={{ display: 'flex', alignItems: 'center', gap: '14px', padding: '14px 16px', background: 'white', borderRadius: '12px', border: '1px solid #EDE8DD' }}>
+              <div style={{ width: '36px', height: '36px', borderRadius: '50%', background: C.bluePale, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '18px', flexShrink: 0 }}>{d.emoji}</div>
+              <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '14px', color: C.text, lineHeight: 1.3 }}>{d.label}</p>
+            </div>
+          ))}
+        </div>
+        <div style={{ marginTop: '14px', padding: '10px 16px', background: C.bluePale, borderRadius: '10px', border: `1px solid ${C.blueLight}`, display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <span style={{ fontSize: '16px' }}>👆</span>
+          <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.blueDark, lineHeight: 1.5 }}>
+            Selecciona tu plato al presionar el botón de confirmar asistencia
+          </p>
+        </div>
+      </div>
+
+      {/* COUNTDOWN */}
+      <div style={{ margin: '8px 28px 0', background: 'white', borderRadius: '16px', border: '1px solid #EDE8DD', padding: '12px 8px 16px' }}>
+        <p style={{ fontFamily: 'Cormorant SC', fontSize: '9px', letterSpacing: '3px', color: C.textLight, textAlign: 'center' }}>FALTAN</p>
+        <Countdown />
+      </div>
+
+      {/* BOTÓN RSVP */}
+      <div style={{ padding: '28px 28px 16px' }}>
+        <button onClick={onRsvp} style={{
+          width: '100%', padding: '20px', borderRadius: '16px', background: C.navy, color: 'white',
+          border: 'none', fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '24px',
+          letterSpacing: '.5px', cursor: 'pointer', boxShadow: `0 6px 24px ${C.navy}40`
+        }}>
+          Confirmar asistencia
+        </button>
+        <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '11px', color: C.textLight, textAlign: 'center', marginTop: '12px', letterSpacing: '.5px' }}>
+          Selecciona tu plato y confirma antes del 12 de junio
+        </p>
+      </div>
+
+      <FloralBottom />
+
+      {/* FOOTER */}
+      <div style={{ textAlign: 'center', padding: '0 32px 40px', background: C.cream }}>
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, marginBottom: '8px' }}>Muchas Gracias</p>
+        <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight, letterSpacing: '1px' }}>19 · 06 · 2026</p>
+      </div>
+    </div>
+  );
+}
+
+// ─── ROOT APP ────────────────────────────────────────────
+function App() {
+  const [step, setStep]   = useState('loading'); // loading | error | already | invite | rsvp | confirmed | declined
+  const [guest, setGuest] = useState(null);
+  const [errMsg, setErrMsg] = useState('');
+
+  useEffect(() => {
+    const code = new URLSearchParams(window.location.search).get('g');
+    if (!code) {
+      setErrMsg('No se proporcionó un enlace de invitación válido.');
+      setStep('error');
+      return;
+    }
+    fetch(`/api/guests/${code.toUpperCase()}`)
+      .then(r => r.json())
+      .then(data => {
+        if (data.error) { setErrMsg(data.error); setStep('error'); return; }
+        setGuest(data);
+        setStep(data.attending !== null ? 'already' : 'invite');
+      })
+      .catch(() => {
+        setErrMsg('No se pudo conectar al servidor. Intenta más tarde.');
+        setStep('error');
+      });
+  }, []);
+
+  if (step === 'loading')    return <LoadingState />;
+  if (step === 'error')      return <ErrorState message={errMsg} />;
+  if (step === 'already')    return <AlreadySubmitted guest={guest} />;
+  if (step === 'confirmed')  return <ConfirmedPage />;
+  if (step === 'declined')   return <DeclinedPage />;
+  if (step === 'rsvp')       return <RsvpPage guest={guest} onDone={att => setStep(att ? 'confirmed' : 'declined')} />;
+  return <InvitePage guest={guest} onRsvp={() => setStep('rsvp')} />;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
