@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path    = require('path');
+const { initWhatsApp } = require('./config/whatsapp');
 
 const app = express();
 
@@ -17,4 +18,5 @@ app.listen(PORT, () => {
   console.log(`✓ Servidor corriendo en http://localhost:${PORT}`);
   console.log(`  → Invitaciones: http://localhost:${PORT}/?g=<INVITE_CODE>`);
   console.log(`  → Admin:        http://localhost:${PORT}/admin.html`);
+  initWhatsApp();
 });

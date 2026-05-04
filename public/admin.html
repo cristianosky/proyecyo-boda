@@ -115,6 +115,105 @@
   }
   .refresh-btn:hover { background: rgba(255,255,255,.1); }
   .loading { text-align: center; padding: 64px 0; color: #7A6E63; font-size: 18px; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+  .add-panel { max-width: 900px; margin: 28px auto 0; padding: 0 20px; display: none; }
+  .add-panel-inner { background: white; border-radius: 14px; border: 1px solid #EDE8DD; padding: 20px 24px; }
+  .add-panel-inner .section-title { margin-bottom: 14px; }
+  .add-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: flex-end; }
+  .add-field { display: flex; flex-direction: column; }
+  .add-field label { font-size: 11px; letter-spacing: 2px; color: #7A6E63; text-transform: uppercase; margin-bottom: 6px; }
+  .add-field input, .add-field select {
+    padding: 10px 14px; border-radius: 8px; border: 1px solid #E2DDD4;
+    font-family: 'Lato'; font-size: 14px; font-weight: 300; color: #3A3028;
+    background: white; outline: none;
+  }
+  .add-field.grow { flex: 1; min-width: 180px; }
+  .btn-add {
+    padding: 10px 22px; background: #2C4160; color: white;
+    border: none; border-radius: 8px; font-family: 'Lato'; font-size: 13px;
+    cursor: pointer; letter-spacing: 1px; white-space: nowrap; align-self: flex-end;
+  }
+  .btn-add:hover { background: #3a5478; }
+  .btn-del {
+    background: none; border: 1px solid #f8d7da; color: #8b3030;
+    border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer;
+    font-family: 'Lato'; white-space: nowrap; display: block; margin-top: 5px;
+  }
+  .btn-del:hover { background: #fdf0f0; }
+  .btn-send {
+    background: #2C4160; border: none; color: white;
+    border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer;
+    font-family: 'Lato'; white-space: nowrap; display: block; margin-bottom: 4px;
+  }
+  .btn-send:hover { background: #3a5478; }
+  .btn-resend {
+    background: none; border: 1px solid #B8D0E5; color: #2C4160;
+    border-radius: 6px; padding: 4px 10px; font-size: 11px; cursor: pointer;
+    font-family: 'Lato'; white-space: nowrap; display: block; margin-bottom: 4px;
+  }
+  .btn-resend:hover { background: #DDE9F3; }
+  .btn-resend:disabled, .btn-send:disabled { opacity: .4; cursor: default; }
+  .notified-date { font-size: 10px; color: #7A6E63; margin-bottom: 4px; }
+  .search-wrap { margin-bottom: 14px; position: relative; }
+  .search-wrap input {
+    width: 100%; padding: 10px 14px 10px 36px; border-radius: 10px;
+    border: 1px solid #E2DDD4; background: white;
+    font-family: 'Lato'; font-size: 13px; font-weight: 300; color: #3A3028; outline: none;
+  }
+  .search-wrap input:focus { border-color: #7A9FBF; }
+  .search-wrap .search-icon {
+    position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    color: #B0A898; font-size: 14px; pointer-events: none;
+  }
+  .no-results { text-align: center; padding: 28px; color: #7A6E63; font-style: italic; font-family: 'Cormorant Garamond', serif; font-size: 16px; }
+  #add-msg { font-size: 12px; margin-top: 10px; display: none; }
+
+  /* ── Modal reenvío ── */
+  #resend-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,.45); z-index: 100;
+    align-items: center; justify-content: center; padding: 20px;
+  }
+  #resend-overlay.open { display: flex; }
+  #resend-modal {
+    background: white; border-radius: 18px; width: 100%; max-width: 500px;
+    box-shadow: 0 8px 40px rgba(0,0,0,.18); overflow: hidden;
+  }
+  #resend-modal .modal-header {
+    background: #2C4160; padding: 20px 24px; color: white;
+  }
+  #resend-modal .modal-header h3 {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    font-size: 20px; font-weight: 300; margin: 0;
+  }
+  #resend-modal .modal-header p {
+    font-size: 12px; opacity: .65; letter-spacing: 1px; margin-top: 4px;
+  }
+  #resend-modal .modal-body { padding: 22px 24px; }
+  #resend-modal textarea {
+    width: 100%; height: 240px; padding: 14px; border-radius: 10px;
+    border: 1px solid #E2DDD4; font-family: 'Lato'; font-size: 13px;
+    font-weight: 300; color: #3A3028; resize: vertical; outline: none;
+    line-height: 1.7;
+  }
+  #resend-modal textarea:focus { border-color: #7A9FBF; }
+  #resend-modal .modal-footer {
+    padding: 0 24px 22px; display: flex; gap: 10px; justify-content: flex-end;
+  }
+  #resend-modal .btn-cancel {
+    padding: 10px 22px; background: none; border: 1px solid #E2DDD4;
+    border-radius: 8px; font-family: 'Lato'; font-size: 13px; color: #7A6E63;
+    cursor: pointer;
+  }
+  #resend-modal .btn-cancel:hover { background: #F8F5EE; }
+  #resend-modal .btn-send {
+    padding: 10px 24px; background: #2C4160; border: none;
+    border-radius: 8px; font-family: 'Lato'; font-size: 13px; color: white;
+    cursor: pointer; letter-spacing: .5px;
+  }
+  #resend-modal .btn-send:hover { background: #3a5478; }
+  #resend-modal .btn-send:disabled { opacity: .6; cursor: default; }
+  #resend-msg { font-size: 12px; margin: 0 24px 14px; display: none; }
+
   @media (max-width: 700px) {
     .cards { grid-template-columns: repeat(2, 1fr); }
     thead th:nth-child(5), td:nth-child(5) { display: none; }
@@ -141,12 +240,59 @@
   <button class="refresh-btn" onclick="loadData()">↻ Actualizar</button>
 </header>
 
+<!-- Formulario agregar invitado -->
+<div class="add-panel" id="add-panel">
+  <div class="add-panel-inner">
+    <p class="section-title">Agregar invitado</p>
+    <div class="add-row">
+      <div class="add-field grow">
+        <label for="new-name">Nombre</label>
+        <input id="new-name" type="text" placeholder="Nombre completo" />
+      </div>
+      <div class="add-field">
+        <label for="new-companions">Cupo</label>
+        <select id="new-companions">
+          <option value="0">Solo (1 persona)</option>
+          <option value="1">1 + 1 acompañante</option>
+          <option value="2">1 + 2 acompañantes</option>
+        </select>
+      </div>
+      <div class="add-field" style="min-width:160px">
+        <label for="new-phone">WhatsApp</label>
+        <input id="new-phone" type="tel" placeholder="Ej: 3001234567" />
+      </div>
+      <button class="btn-add" onclick="addGuest()">+ Agregar</button>
+    </div>
+    <p id="add-msg"></p>
+  </div>
+</div>
+
 <div class="container">
   <div id="content" class="loading">Cargando…</div>
 </div>
 
+<!-- Modal reenviar invitación -->
+<div id="resend-overlay">
+  <div id="resend-modal">
+    <div class="modal-header">
+      <h3 id="resend-title">Reenviar invitación</h3>
+      <p id="resend-phone"></p>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:11px;letter-spacing:2px;color:#7A6E63;text-transform:uppercase;margin-bottom:8px">Mensaje a enviar</p>
+      <textarea id="resend-text"></textarea>
+    </div>
+    <p id="resend-msg"></p>
+    <div class="modal-footer">
+      <button class="btn-cancel" onclick="closeResendModal()">Cancelar</button>
+      <button class="btn-send" id="resend-send-btn" onclick="sendResend()">Enviar por WhatsApp</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let adminToken = '';
+let _resendGuestId = null;
 
 function doLogin() {
   const val = document.getElementById('token-input').value.trim();
@@ -179,11 +325,12 @@ async function loadData() {
       return;
     }
 
-    // Hide login overlay
+    // Hide login overlay, show add-guest panel
     document.getElementById('login-overlay').style.display = 'none';
+    document.getElementById('add-panel').style.display = 'block';
 
     const { summary, guests } = data;
-    const { total, confirmed, declined, pending, total_attendees, dishes } = summary;
+    const { total, confirmed, declined, pending, notified, total_attendees, dishes } = summary;
 
     content.innerHTML = `
       <div class="cards">
@@ -192,6 +339,13 @@ async function loadData() {
         <div class="card declined"><div class="card-value">${declined}</div><div class="card-label">No asisten</div></div>
         <div class="card pending"><div class="card-value">${pending}</div><div class="card-label">Sin respuesta</div></div>
         <div class="card"><div class="card-value">${total_attendees}</div><div class="card-label">Asistentes totales</div></div>
+        <div class="card" style="border-left:3px solid #2C4160">
+          <div class="card-value" style="font-size:28px;display:flex;align-items:center;gap:8px">
+            ${notified}
+            <span style="font-size:13px;background:#2C4160;color:white;border-radius:20px;padding:2px 10px;font-family:Lato;font-weight:400;letter-spacing:.5px">${notified}/${total}</span>
+          </div>
+          <div class="card-label">Invitaciones enviadas</div>
+        </div>
       </div>
 
       <div class="dishes-row">
@@ -200,8 +354,15 @@ async function loadData() {
         <div class="dish-chip"><strong>🐟 ${dishes.pescado_teriyaki}</strong>Pescado teriyaki</div>
       </div>
 
-      <p class="section-title">Lista de invitados</p>
-      <table>
+      <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:14px">
+        <p class="section-title" style="margin-bottom:0">Lista de invitados</p>
+        <div class="search-wrap" style="width:260px;margin-bottom:0">
+          <span class="search-icon">🔍</span>
+          <input type="text" id="guest-search" placeholder="Buscar por nombre…" oninput="filterGuests(this.value)" />
+        </div>
+      </div>
+
+      <table id="guests-table">
         <thead>
           <tr>
             <th>Invitado</th>
@@ -209,9 +370,10 @@ async function loadData() {
             <th>Estado</th>
             <th>Selección de platos</th>
             <th>Respondió</th>
+            <th>Acciones</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody id="guests-tbody">
           ${guests.map(g => {
             const badge = g.attending === true
               ? '<span class="badge badge-confirmed">✓ Confirmado</span>'
@@ -232,12 +394,32 @@ async function loadData() {
 
             const inviteUrl = `${location.origin}/?g=${g.invite_code}`;
 
+            const notifDate = g.notified_at
+              ? new Date(g.notified_at).toLocaleDateString('es-CO', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })
+              : null;
+
+            // JSON.stringify produce comillas dobles; las escapamos para no romper el atributo onclick=""
+            const jName = JSON.stringify(g.name).replace(/"/g, '&quot;');
+
+            let actionBtn = '';
+            if (!g.phone) {
+              actionBtn = `<button class="btn-send" disabled title="Sin WhatsApp registrado">📤 Enviar</button>`;
+            } else if (!g.notified_at) {
+              actionBtn = `<button class="btn-send" onclick="openResendModal('${g.id}', ${jName}, '${g.invite_code}', '${g.phone}', true)">📤 Enviar</button>`;
+            } else {
+              actionBtn = `
+                <div class="notified-date">✓ Enviado ${notifDate}</div>
+                <button class="btn-resend" onclick="openResendModal('${g.id}', ${jName}, '${g.invite_code}', '${g.phone}', false)">↩ Reenviar</button>
+              `;
+            }
+
             return `
-              <tr>
+              <tr data-name="${g.name.toLowerCase()}">
                 <td>
                   <strong>${g.name}</strong>
                   <div style="font-size:11px;color:#7A6E63;margin-top:2px">
                     cupo: ${g.max_companions === 0 ? '1 persona' : g.max_companions === 1 ? '1+1' : '1+2'}
+                    ${g.phone ? `· 📱 ${g.phone}` : ''}
                   </div>
                 </td>
                 <td>
@@ -250,15 +432,197 @@ async function loadData() {
                 <td>${badge}</td>
                 <td>${people || '<span style="color:#ccc;font-size:12px">—</span>'}</td>
                 <td style="font-size:12px;color:#7A6E63">${date}</td>
+                <td>
+                  ${actionBtn}
+                  <button class="btn-del" onclick="deleteGuest('${g.id}', ${jName})">✕ Eliminar</button>
+                </td>
               </tr>
             `;
           }).join('')}
         </tbody>
       </table>
+      <div id="no-results" class="no-results" style="display:none">No se encontraron invitados con ese nombre</div>
     `;
   } catch (err) {
     content.innerHTML = '<div class="loading" style="color:#B05050">Error al cargar. Revisa tu conexión.</div>';
   }
+}
+
+async function addGuest() {
+  const name       = document.getElementById('new-name').value.trim();
+  const companions = document.getElementById('new-companions').value;
+  const phone      = document.getElementById('new-phone').value.trim();
+  const msg        = document.getElementById('add-msg');
+
+  if (!name) {
+    msg.textContent = 'Por favor ingresa el nombre del invitado.';
+    msg.style.color = '#B05050';
+    msg.style.display = 'block';
+    return;
+  }
+
+  try {
+    const res = await fetch(`/api/admin/guests?token=${encodeURIComponent(adminToken)}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, max_companions: parseInt(companions, 10), phone: phone || null }),
+    });
+    const data = await res.json();
+    if (!res.ok) {
+      msg.textContent = data.error || 'Error al agregar invitado.';
+      msg.style.color = '#B05050';
+      msg.style.display = 'block';
+      return;
+    }
+    document.getElementById('new-name').value = '';
+    document.getElementById('new-companions').value = '0';
+    document.getElementById('new-phone').value = '';
+    msg.textContent = `✓ "${data.guest.name}" agregado · Código: ${data.guest.invite_code}`;
+    msg.style.color = '#3a7a5a';
+    msg.style.display = 'block';
+    setTimeout(() => { msg.style.display = 'none'; }, 7000);
+    loadData();
+  } catch {
+    msg.textContent = 'Error de conexión.';
+    msg.style.color = '#B05050';
+    msg.style.display = 'block';
+  }
+}
+
+async function deleteGuest(id, name) {
+  if (!confirm(`¿Eliminar a "${name}"?\n\nEsto borrará también su confirmación de asistencia.`)) return;
+  try {
+    const res = await fetch(`/api/admin/guests/${id}?token=${encodeURIComponent(adminToken)}`, {
+      method: 'DELETE',
+    });
+    const data = await res.json();
+    if (!res.ok) { alert(data.error || 'Error al eliminar.'); return; }
+    loadData();
+  } catch {
+    alert('Error de conexión.');
+  }
+}
+
+function buildDefaultResendMessage(guestName, inviteCode) {
+  const firstName = guestName.split(' ')[0];
+  const url = `https://boda-jeifry.duckdns.org/?g=${inviteCode}`;
+  return [
+    `💍 ¡Hola, ${firstName}!`,
+    '',
+    `Te recordamos que tienes una invitación pendiente para la boda de Jeifry y Karen 💕`,
+    '',
+    '📅 Viernes 19 de junio de 2026',
+    '🕖 7:00 PM',
+    '📍 Barrio El Prado, Calle 76 #52-06',
+    '   Barranquilla, Atlántico',
+    '',
+    'Por favor confirma tu asistencia aquí:',
+    `🔗 ${url}`,
+    '',
+    '¡Te esperamos! 💐',
+  ].join('\n');
+}
+
+function buildInvitationMessage(guestName, inviteCode) {
+  const firstName = guestName.split(' ')[0];
+  const url = `https://boda-jeifry.duckdns.org/?g=${inviteCode}`;
+  return [
+    `💍 *¡Hola, ${firstName}!*`,
+    '',
+    `*Jeifry y Karen* te invitan a celebrar su boda 🎊`,
+    '',
+    '📅 *Viernes 19 de junio de 2026*',
+    '🕖 7:00 PM',
+    '📍 Barrio El Prado, Calle 76 #52-06',
+    '   Barranquilla, Atlántico',
+    '',
+    'Para ver tu invitación y confirmar asistencia entra aquí:',
+    `🔗 ${url}`,
+    '',
+    '_¡Te esperamos con mucho amor!_ 💐',
+  ].join('\n');
+}
+
+function openResendModal(guestId, guestName, inviteCode, phone, isFirstSend) {
+  _resendGuestId = guestId;
+  document.getElementById('resend-title').textContent = isFirstSend
+    ? `Enviar invitación a ${guestName}`
+    : `Reenviar invitación a ${guestName}`;
+  document.getElementById('resend-phone').textContent  = `📱 +57${phone.replace(/^57/, '')}`;
+  document.getElementById('resend-text').value         = isFirstSend
+    ? buildInvitationMessage(guestName, inviteCode)
+    : buildDefaultResendMessage(guestName, inviteCode);
+  document.getElementById('resend-msg').style.display  = 'none';
+  document.getElementById('resend-send-btn').disabled  = false;
+  document.getElementById('resend-overlay').classList.add('open');
+  setTimeout(() => document.getElementById('resend-text').focus(), 50);
+}
+
+function closeResendModal() {
+  document.getElementById('resend-overlay').classList.remove('open');
+  _resendGuestId = null;
+}
+
+// Cerrar al hacer click fuera del modal
+document.getElementById('resend-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('resend-overlay')) closeResendModal();
+});
+
+async function sendResend() {
+  const message = document.getElementById('resend-text').value.trim();
+  const btn     = document.getElementById('resend-send-btn');
+  const msg     = document.getElementById('resend-msg');
+
+  if (!message) return;
+
+  btn.disabled    = true;
+  btn.textContent = 'Enviando…';
+  msg.style.display = 'none';
+
+  try {
+    const res  = await fetch(`/api/admin/guests/${_resendGuestId}/resend?token=${encodeURIComponent(adminToken)}`, {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ message }),
+    });
+    const data = await res.json();
+
+    if (!res.ok) {
+      msg.textContent       = data.error || 'Error al enviar.';
+      msg.style.color       = '#B05050';
+      msg.style.display     = 'block';
+      btn.disabled          = false;
+      btn.textContent       = 'Enviar por WhatsApp';
+      return;
+    }
+
+    msg.textContent   = '✓ Mensaje enviado correctamente';
+    msg.style.color   = '#3a7a5a';
+    msg.style.display = 'block';
+    btn.textContent   = '✓ Enviado';
+    setTimeout(() => closeResendModal(), 1800);
+  } catch {
+    msg.textContent   = 'Error de conexión.';
+    msg.style.color   = '#B05050';
+    msg.style.display = 'block';
+    btn.disabled      = false;
+    btn.textContent   = 'Enviar por WhatsApp';
+  }
+}
+
+function filterGuests(query) {
+  const q = query.toLowerCase().trim();
+  const rows = document.querySelectorAll('#guests-tbody tr');
+  let visible = 0;
+  rows.forEach(row => {
+    const match = !q || row.dataset.name.includes(q);
+    row.style.display = match ? '' : 'none';
+    if (match) visible++;
+  });
+  const noResults = document.getElementById('no-results');
+  const table = document.getElementById('guests-table');
+  if (noResults) noResults.style.display = visible === 0 ? 'block' : 'none';
+  if (table)     table.style.display     = visible === 0 ? 'none'  : '';
 }
 
 // Auto-load if token is in URL param (e.g. ?token=xxx)

@@ -7,6 +7,8 @@ CREATE TABLE IF NOT EXISTS guests (
   name           VARCHAR(100) NOT NULL,
   invite_code    CHAR(10)     UNIQUE NOT NULL,
   max_companions INT          NOT NULL DEFAULT 0,
+  phone          VARCHAR(20),
+  notified_at    TIMESTAMPTZ,
   created_at     TIMESTAMPTZ  DEFAULT NOW()
 );
 
