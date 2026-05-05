@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin · Boda Jeifry & Karen</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -231,7 +230,7 @@
     margin-bottom: 6px;
   }
   #wa-qr-box p { font-size: 12px; color: #7A6E63; margin-bottom: 20px; }
-  #wa-qr-canvas { margin: 0 auto; display: block; }
+  #wa-qr-img { margin: 0 auto; display: block; width: 240px; height: 240px; }
   #wa-qr-msg { font-size: 12px; color: #7A6E63; margin-top: 16px; min-height: 18px; }
   #wa-qr-close {
     margin-top: 16px;
@@ -321,7 +320,7 @@
   <div id="wa-qr-box">
     <h3>Escanea el QR</h3>
     <p>Abre WhatsApp → Dispositivos vinculados → Vincular dispositivo</p>
-    <canvas id="wa-qr-canvas"></canvas>
+    <img id="wa-qr-img" alt="QR WhatsApp">
     <p id="wa-qr-msg"></p>
     <button id="wa-qr-close" onclick="closeQR()">Cerrar</button>
   </div>
@@ -756,11 +755,8 @@ async function checkWAStatus() {
   } catch (_) {}
 }
 
-function renderQR(qrString) {
-  const canvas = document.getElementById('wa-qr-canvas');
-  QRCode.toCanvas(canvas, qrString, { width: 240, margin: 2 }, err => {
-    if (err) document.getElementById('wa-qr-msg').textContent = 'Error generando QR';
-  });
+function renderQR(dataURL) {
+  document.getElementById('wa-qr-img').src = dataURL;
 }
 
 function openQR() {

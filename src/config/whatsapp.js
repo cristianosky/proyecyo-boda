@@ -1,5 +1,6 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
-const qrcode = require('qrcode-terminal');
+const qrcodeTerminal = require('qrcode-terminal');
+const QRCode         = require('qrcode');
 
 let client    = null;
 let ready     = false;
@@ -12,25 +13,34 @@ function isReady()   { return ready; }
 function initWhatsApp() {
   if (!process.env.WHATSAPP_TO) return;
 
+  const puppeteerConfig = process.platform === 'linux'
+    ? {
+        headless: true,
+        executablePath: '/usr/bin/google-chrome-stable',
+        args: [
+          '--no-sandbox',
+          '--disable-setuid-sandbox',
+          '--disable-dev-shm-usage',
+          '--disable-gpu',
+          '--single-process',
+        ],
+      }
+    : {
+        headless: true,
+        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+      };
+
   client = new Client({
     authStrategy: new LocalAuth({ dataPath: '.wwebjs_auth' }),
-    puppeteer: {
-      headless: true,
-      executablePath: '/usr/bin/google-chrome-stable',
-      args: [
-        '--no-sandbox',
-        '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',
-        '--disable-gpu',
-        '--single-process',
-      ],
-    },
+    puppeteer: puppeteerConfig,
   });
 
   client.on('qr', qr => {
-    currentQR = qr;
+    qrcodeTerminal.generate(qr, { small: true });
     console.log('\n[WhatsApp] QR disponible — escanéalo desde el panel admin\n');
-    qrcode.generate(qr, { small: true });
+    QRCode.toDataURL(qr, { scale: 8, margin: 2 })
+      .then(dataUrl => { currentQR = dataUrl; })
+      .catch(err  => console.error('[WhatsApp] Error generando imagen QR:', err.message));
   });
 
   client.on('authenticated', () => {
