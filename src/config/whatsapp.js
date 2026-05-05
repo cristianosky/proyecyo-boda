@@ -22,7 +22,8 @@ function initWhatsApp() {
           '--disable-setuid-sandbox',
           '--disable-dev-shm-usage',
           '--disable-gpu',
-          '--single-process',
+          '--disable-extensions',
+          '--disable-background-networking',
         ],
       }
     : {
