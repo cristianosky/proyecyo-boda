@@ -259,23 +259,63 @@ function AlreadySubmitted({ guest, onEdit }) {
         <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '30px', color: C.navy, fontWeight: 300, marginBottom: '16px', lineHeight: 1.2 }}>
           {attending ? '¡Ya confirmaste tu asistencia!' : 'Gracias por avisarnos'}
         </p>
+
         {attending ? (
           <>
             <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '14px', color: C.textLight, lineHeight: 1.9 }}>
               ¡Te esperamos el <strong style={{ color: C.navy, fontWeight: 400 }}>19 de junio de 2026</strong><br />
               a las <strong style={{ color: C.navy, fontWeight: 400 }}>7:00 PM</strong> en el Barrio El Prado, Barranquilla.
             </p>
+
+            {/* NUEVO BLOQUE DE UBICACIÓN */}
+            <div style={{ textAlign: 'center', padding: '28px 36px' }}>
+              <SectionTitle>LUGAR DE CELEBRACIÓN</SectionTitle>
+              <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '26px', color: C.navy, lineHeight: 1.3, marginBottom: '8px' }}>
+                Barrio El Prado
+              </p>
+              <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '13px', color: C.textLight, lineHeight: 1.8, letterSpacing: '.3px' }}>
+                Calle 76 #52-06<br />Barranquilla, Atlántico
+              </p>
+              <a
+                href="https://www.google.com/maps/place/Itamar+Restaurante+Peruano/@11.0020933,-74.8068498,19.25z/data=!4m6!3m5!1s0x8ef42d4012b73847:0x891be61147e36bd5!8m2!3d11.0021404!4d-74.8063042!16s%2Fg%2F11thgyh9gk?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: 'inline-block',
+                  marginTop: '16px',
+                  padding: '10px 24px',
+                  borderRadius: '40px',
+                  border: `1px solid ${C.blue}`,
+                  color: C.blue,
+                  fontFamily: 'Lato',
+                  fontWeight: 300,
+                  fontSize: '12px',
+                  letterSpacing: '1.5px',
+                  textDecoration: 'none',
+                  textTransform: 'uppercase'
+                }}
+              >
+                Ver en el mapa
+              </a>
+            </div>
+
             {people.length > 0 && (
               <div style={{ marginTop: '24px', background: 'white', borderRadius: '14px', border: '1px solid #EDE8DD', padding: '18px 20px', textAlign: 'left' }}>
-                <p style={{ fontFamily: 'Cormorant SC', fontSize: '10px', letterSpacing: '3px', color: C.textLight, marginBottom: '12px', textAlign: 'center' }}>TU SELECCIÓN</p>
+                <p style={{ fontFamily: 'Cormorant SC', fontSize: '10px', letterSpacing: '3px', color: C.textLight, marginBottom: '12px', textAlign: 'center' }}>
+                  TU SELECCIÓN
+                </p>
                 {people.map((p, i) => (
                   <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
                     <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: C.bluePale, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', flexShrink: 0 }}>
                       {p.is_companion ? '👤' : '⭐'}
                     </div>
                     <div>
-                      <p style={{ fontFamily: 'Lato', fontWeight: 400, fontSize: '13px', color: C.navy }}>{p.person_name}</p>
-                      <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight }}>{DISH_LABELS[p.dish] || p.dish}</p>
+                      <p style={{ fontFamily: 'Lato', fontWeight: 400, fontSize: '13px', color: C.navy }}>
+                        {p.person_name}
+                      </p>
+                      <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '12px', color: C.textLight }}>
+                        {DISH_LABELS[p.dish] || p.dish}
+                      </p>
                     </div>
                   </div>
                 ))}
@@ -287,13 +327,27 @@ function AlreadySubmitted({ guest, onEdit }) {
             Lamentamos que no puedas acompañarnos,<br />pero te tendremos en nuestros corazones<br />en ese día tan especial.
           </p>
         )}
-        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, marginTop: '28px' }}>Jeifry & Karen</p>
-        <button onClick={onEdit} style={{
-          marginTop: '20px', background: 'none',
-          border: `1px solid ${C.blueLight}`, borderRadius: '10px',
-          padding: '11px 24px', fontFamily: 'Lato', fontWeight: 300,
-          fontSize: '13px', color: C.textLight, cursor: 'pointer', letterSpacing: '.5px'
-        }}>
+
+        <p style={{ fontFamily: 'Cormorant Garamond', fontStyle: 'italic', fontSize: '28px', color: C.navy, marginTop: '28px' }}>
+          Jeifry & Karen
+        </p>
+
+        <button
+          onClick={onEdit}
+          style={{
+            marginTop: '20px',
+            background: 'none',
+            border: `1px solid ${C.blueLight}`,
+            borderRadius: '10px',
+            padding: '11px 24px',
+            fontFamily: 'Lato',
+            fontWeight: 300,
+            fontSize: '13px',
+            color: C.textLight,
+            cursor: 'pointer',
+            letterSpacing: '.5px'
+          }}
+        >
           Cambiar mi respuesta
         </button>
       </div>
@@ -559,7 +613,7 @@ function InvitePage({ guest, onRsvp }) {
         <p style={{ fontFamily: 'Lato', fontWeight: 300, fontSize: '13px', color: C.textLight, lineHeight: 1.8, letterSpacing: '.3px' }}>
           Calle 76 #52-06<br />Barranquilla, Atlántico
         </p>
-        <a href="https://maps.google.com/?q=Calle+76+52-06+Barranquilla" target="_blank" rel="noreferrer" style={{
+        <a href="https://www.google.com/maps/place/Itamar+Restaurante+Peruano/@11.0020933,-74.8068498,19.25z/data=!4m6!3m5!1s0x8ef42d4012b73847:0x891be61147e36bd5!8m2!3d11.0021404!4d-74.8063042!16s%2Fg%2F11thgyh9gk?entry=ttu&g_ep=EgoyMDI2MDQyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noreferrer" style={{
           display: 'inline-block', marginTop: '16px', padding: '10px 24px', borderRadius: '40px',
           border: `1px solid ${C.blue}`, color: C.blue, fontFamily: 'Lato', fontWeight: 300,
           fontSize: '12px', letterSpacing: '1.5px', textDecoration: 'none', textTransform: 'uppercase'
