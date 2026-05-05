@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin · Boda Jeifry & Karen</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   body {
@@ -174,6 +175,74 @@
     align-items: center; justify-content: center; padding: 20px;
   }
   #resend-overlay.open { display: flex; }
+  .wa-bar {
+    background: white;
+    border-bottom: 1px solid #EDE8DD;
+    padding: 12px 32px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    font-size: 13px;
+  }
+  .wa-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #ccc;
+    flex-shrink: 0;
+  }
+  .wa-dot.connected { background: #3a7a5a; }
+  .wa-dot.waiting   { background: #e0a030; }
+  .wa-label { color: #3A3028; }
+  .wa-btn {
+    margin-left: auto;
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 6px 16px;
+    font-size: 12px;
+    cursor: pointer;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .wa-btn:hover { background: #1ebe5a; }
+  #wa-qr-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+  }
+  #wa-qr-overlay.open { display: flex; }
+  #wa-qr-box {
+    background: white;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+    max-width: 340px;
+    width: 90%;
+  }
+  #wa-qr-box h3 {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 22px;
+    color: #2C4160;
+    margin-bottom: 6px;
+  }
+  #wa-qr-box p { font-size: 12px; color: #7A6E63; margin-bottom: 20px; }
+  #wa-qr-canvas { margin: 0 auto; display: block; }
+  #wa-qr-msg { font-size: 12px; color: #7A6E63; margin-top: 16px; min-height: 18px; }
+  #wa-qr-close {
+    margin-top: 16px;
+    background: none;
+    border: 1px solid #ccc;
+    border-radius: 20px;
+    padding: 6px 20px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #7A6E63;
+  }
   #resend-modal {
     background: white; border-radius: 18px; width: 100%; max-width: 500px;
     box-shadow: 0 8px 40px rgba(0,0,0,.18); overflow: hidden;
@@ -239,6 +308,24 @@
   </div>
   <button class="refresh-btn" onclick="loadData()">↻ Actualizar</button>
 </header>
+
+<!-- Barra estado WhatsApp -->
+<div class="wa-bar" id="wa-bar" style="display:none">
+  <div class="wa-dot" id="wa-dot"></div>
+  <span class="wa-label" id="wa-label">WhatsApp…</span>
+  <button class="wa-btn" id="wa-qr-btn" onclick="openQR()" style="display:none">Ver QR</button>
+</div>
+
+<!-- Modal QR -->
+<div id="wa-qr-overlay">
+  <div id="wa-qr-box">
+    <h3>Escanea el QR</h3>
+    <p>Abre WhatsApp → Dispositivos vinculados → Vincular dispositivo</p>
+    <canvas id="wa-qr-canvas"></canvas>
+    <p id="wa-qr-msg"></p>
+    <button id="wa-qr-close" onclick="closeQR()">Cerrar</button>
+  </div>
+</div>
 
 <!-- Formulario agregar invitado -->
 <div class="add-panel" id="add-panel">
@@ -328,6 +415,8 @@ async function loadData() {
     // Hide login overlay, show add-guest panel
     document.getElementById('login-overlay').style.display = 'none';
     document.getElementById('add-panel').style.display = 'block';
+    document.getElementById('wa-bar').style.display = 'flex';
+    startWAPolling();
 
     const { summary, guests } = data;
     const { total, confirmed, declined, pending, notified, total_attendees, dishes } = summary;
@@ -631,6 +720,67 @@ if (urlToken) {
   adminToken = urlToken;
   loadData();
 }
+
+// ── WhatsApp status & QR ──────────────────────────────────────────
+let _waPolling = null;
+let _lastQR    = null;
+
+async function checkWAStatus() {
+  try {
+    const res  = await fetch(`/api/admin/whatsapp-status?token=${encodeURIComponent(adminToken)}`);
+    if (!res.ok) return;
+    const { ready, qr } = await res.json();
+
+    const dot   = document.getElementById('wa-dot');
+    const label = document.getElementById('wa-label');
+    const btn   = document.getElementById('wa-qr-btn');
+
+    if (ready) {
+      dot.className   = 'wa-dot connected';
+      label.textContent = 'WhatsApp conectado ✓';
+      btn.style.display = 'none';
+      closeQR();
+    } else if (qr) {
+      dot.className   = 'wa-dot waiting';
+      label.textContent = 'WhatsApp: escanea el QR para activar';
+      btn.style.display = 'inline-block';
+      if (qr !== _lastQR) {
+        _lastQR = qr;
+        renderQR(qr);
+      }
+    } else {
+      dot.className   = 'wa-dot';
+      label.textContent = 'WhatsApp: iniciando…';
+      btn.style.display = 'none';
+    }
+  } catch (_) {}
+}
+
+function renderQR(qrString) {
+  const canvas = document.getElementById('wa-qr-canvas');
+  QRCode.toCanvas(canvas, qrString, { width: 240, margin: 2 }, err => {
+    if (err) document.getElementById('wa-qr-msg').textContent = 'Error generando QR';
+  });
+}
+
+function openQR() {
+  document.getElementById('wa-qr-overlay').classList.add('open');
+  if (_lastQR) renderQR(_lastQR);
+}
+
+function closeQR() {
+  document.getElementById('wa-qr-overlay').classList.remove('open');
+}
+
+function startWAPolling() {
+  if (_waPolling) return;
+  checkWAStatus();
+  _waPolling = setInterval(checkWAStatus, 5000);
+}
+
+document.getElementById('wa-qr-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('wa-qr-overlay')) closeQR();
+});
 </script>
 </body>
 </html>

@@ -1,15 +1,16 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const qrcode = require('qrcode-terminal');
 
-let client = null;
-let ready  = false;
+let client    = null;
+let ready     = false;
+let currentQR = null;
 
-function getClient() {
-  return ready ? client : null;
-}
+function getClient() { return ready ? client : null; }
+function getQR()     { return currentQR; }
+function isReady()   { return ready; }
 
 function initWhatsApp() {
-  if (!process.env.WHATSAPP_TO) return; // no configurado, saltar
+  if (!process.env.WHATSAPP_TO) return;
 
   client = new Client({
     authStrategy: new LocalAuth({ dataPath: '.wwebjs_auth' }),
@@ -27,19 +28,19 @@ function initWhatsApp() {
   });
 
   client.on('qr', qr => {
-    console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-    console.log(' [WhatsApp] Escanea este QR con tu teléfono');
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n');
+    currentQR = qr;
+    console.log('\n[WhatsApp] QR disponible — escanéalo desde el panel admin\n');
     qrcode.generate(qr, { small: true });
-    console.log('');
   });
 
   client.on('authenticated', () => {
+    currentQR = null;
     console.log('[WhatsApp] Sesión autenticada ✓');
   });
 
   client.on('ready', () => {
-    ready = true;
+    ready     = true;
+    currentQR = null;
     console.log('[WhatsApp] Cliente listo — las notificaciones están activas ✓');
   });
 
@@ -50,7 +51,6 @@ function initWhatsApp() {
   client.on('disconnected', reason => {
     ready = false;
     console.warn('[WhatsApp] Desconectado:', reason);
-    // Reintentar conexión después de 10 segundos
     setTimeout(() => {
       console.log('[WhatsApp] Reintentando conexión…');
       client.initialize().catch(err => console.error('[WhatsApp] Error al reiniciar:', err.message));
@@ -62,4 +62,4 @@ function initWhatsApp() {
   });
 }
 
-module.exports = { initWhatsApp, getClient };
+module.exports = { initWhatsApp, getClient, getQR, isReady };

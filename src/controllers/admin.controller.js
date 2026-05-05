@@ -1,6 +1,7 @@
 const pool   = require('../config/database');
 const crypto = require('crypto');
 const { sendWhatsAppNotification, sendCustomWhatsApp } = require('../services/whatsapp.service');
+const { getQR, isReady } = require('../config/whatsapp');
 
 function generateCode() {
   const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -190,4 +191,12 @@ async function testWhatsApp(req, res) {
   }
 }
 
-module.exports = { getAllRsvps, addGuest, deleteGuest, resendInvitation, testWhatsApp };
+function getWhatsappStatus(req, res) {
+  const token = req.query.token;
+  if (!token || token !== process.env.ADMIN_TOKEN) {
+    return res.status(401).json({ error: 'Token inválido' });
+  }
+  res.json({ ready: isReady(), qr: getQR() });
+}
+
+module.exports = { getAllRsvps, addGuest, deleteGuest, resendInvitation, testWhatsApp, getWhatsappStatus };
