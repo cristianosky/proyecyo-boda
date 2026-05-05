@@ -15,11 +15,13 @@ function initWhatsApp() {
     authStrategy: new LocalAuth({ dataPath: '.wwebjs_auth' }),
     puppeteer: {
       headless: true,
+      executablePath: '/usr/bin/google-chrome-stable',
       args: [
         '--no-sandbox',
         '--disable-setuid-sandbox',
-        '--disable-dev-shm-usage',  // importante en VPS con poca RAM
+        '--disable-dev-shm-usage',
         '--disable-gpu',
+        '--single-process',
       ],
     },
   });
